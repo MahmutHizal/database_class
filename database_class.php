@@ -35,21 +35,20 @@ class Sql extends db
 
             $sql = "SELECT * FROM " . $table_name;
         }
-
-        if (is_array($inner_join)) {
-
-            $values = array_values($inner_join);
-            $keys = array_keys($inner_join);
-
-            for ($i = 0; $i < count($values); $i++) {
-
-                if ($i == count($values) - 1) {
-                    $sql .= " INNER JOIN " . $keys[$i] . " ON " . $keys[$i] . "." . $values[$i] . " = " . $table_name . "." . $table_name_colum[$i];
-                } else {
-                    $sql .= " INNER JOIN " . $keys[$i] . " ON " . $keys[$i] . "." . $values[$i] . " = " . $table_name . "." . $table_name_colum[$i];
-                }
+        
+        if(is_array($inner_join))
+        {
+            $a = 0;
+            $inn = array();
+            foreach($inner_join as $keys => $values)
+            {
+                $a++;
+                $inn[] = "INNER JOIN " . $keys . " ON " . $keys . "." . $values . " = " . $table_name . "." . $table_name_column[$a];
             }
+            $sql = implode(' ', $inn);
+            unset($inn, $a);
         }
+
         if (is_array($where)) {
 
             $sql .= " WHERE ";
